@@ -407,6 +407,41 @@ class Pi05Mapping:
 
         return module
 
+    def to_runtime_config(self) -> dict:
+        """
+        Convert to robot_runtime configuration dict.
+
+        Returns:
+            Dictionary compatible with RuntimeConfig.
+        """
+        cfg = self.config
+        return {
+            "deadline_ms": cfg.latency_budget_ms,
+            "timeout_policy": "RETURN_LAST",
+            "backend": "cuda_graph",
+            "device": "cuda:0",
+            "preallocate": True,
+            "warmup_iterations": 3,
+        }
+
+    def to_pi0_config(self) -> dict:
+        """
+        Convert to robot_runtime PI0Config dict.
+
+        Returns:
+            Dictionary compatible with PI0Config.
+        """
+        cfg = self.config
+        return {
+            "chunk_size": cfg.chunk_size,
+            "temporal_action_steps": cfg.temporal_action_steps,
+            "use_action_cache": cfg.use_action_cache,
+            "normalize_observations": True,
+            "denormalize_actions": True,
+            "use_language": cfg.use_language,
+            "max_language_tokens": cfg.max_language_tokens,
+        }
+
 
 def get_policy_mapping(policy_name: str) -> Pi0Mapping | Pi05Mapping:
     """

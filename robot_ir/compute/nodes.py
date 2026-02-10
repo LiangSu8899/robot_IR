@@ -31,6 +31,9 @@ class ControlLogicType(Enum):
     GATING = auto()  # Gating mechanism
     SAFETY_FILTER = auto()  # Safety constraint filter
     ROUTER = auto()  # Route to different paths
+    LOOP = auto()  # Iterative loop (e.g., diffusion, autoregressive)
+    GENERATOR = auto()  # Generate tensors (e.g., noise sampling)
+    AGGREGATOR = auto()  # Aggregate/ensemble outputs
 
 
 @dataclass
@@ -83,6 +86,7 @@ class NeuralBlock(ComputeNode):
     memory_hint: MemoryHint | None = None
     is_trainable: bool = False
     checkpoint_path: str | None = None
+    metadata: dict = field(default_factory=dict)
 
     def __post_init__(self) -> None:
         """Set node type."""

@@ -12,6 +12,8 @@ class PipelineMode(Enum):
     SYNC = auto()  # Synchronous execution
     ASYNC = auto()  # Asynchronous execution
     STAGGERED = auto()  # Staggered multi-rate execution
+    STREAMING = auto()  # Streaming pipeline for low-latency
+    STANDARD = auto()  # Standard sequential execution
 
 
 @dataclass
