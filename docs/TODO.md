@@ -1,6 +1,6 @@
 # Robot IR - Development Roadmap
 
-## Phase 1: Core IR (Current)
+## Phase 1: Core IR ✅ COMPLETE
 
 ### Completed ✅
 - [x] Core type definitions (TensorShape, DataType)
@@ -10,33 +10,42 @@
 - [x] ComputeGraph and node types
 - [x] ControlLoop specification
 - [x] SchedulingHints for Thor optimization
-- [x] Pi0/Pi0.5 model mappings
+- [x] Pi0/Pi0.5 model mappings (with full compute graph)
 - [x] Basic lowering pass infrastructure
-
-### In Progress 🔄
-- [ ] Complete lowering pass implementations
-- [ ] Runtime bridge to robot_runtime
-- [ ] Serialization/deserialization (JSON, Protobuf)
+- [x] RuntimeBridge for robot_runtime integration
+- [x] JSON serialization/deserialization
+- [x] Unit tests for core components
 
 ## Phase 2: Pi-Series Model Integration
 
-### Robot IR ↔ Pi Model Mapping
-- [ ] Complete Pi0 architecture mapping
-  - [ ] Vision encoder (SigLIP) node spec
-  - [ ] Action expert node spec
-  - [ ] Flow matching head spec
-- [ ] Pi0.5 with VLM backbone
-  - [ ] PaLiGemma encoder mapping
-  - [ ] Language token handling
+### Robot IR ↔ Pi Model Mapping ✅
+- [x] Complete Pi0 architecture mapping
+  - [x] Vision encoder (SigLIP) node spec
+  - [x] Proprio encoder node spec
+  - [x] Multi-modal fusion node spec
+  - [x] Action expert node spec
+  - [x] Flow matching head spec
+  - [x] Action chunk selector node spec
+- [x] Pi0.5 with VLM backbone
+  - [x] PaLiGemma encoder mapping
+  - [x] Language token handling
+  - [x] Language KV cache
 - [ ] Pi0-FAST variant
   - [ ] Autoregressive action tokenizer
 
-### Memory Optimization Mapping
+### Memory Optimization Mapping 🔄
+- [x] Action chunk buffer management
+- [x] Vision feature caching
 - [ ] KV cache layout specification
   - [ ] Layer-wise cache allocation
   - [ ] Sliding window support
-- [ ] Action chunk buffer management
-- [ ] Vision feature caching
+
+### Runtime Integration ✅
+- [x] RuntimeBridge.create_runtime_configs()
+- [x] extract_observation_spec()
+- [x] extract_action_spec()
+- [x] get_adapter_type()
+- [x] validate_for_runtime()
 
 ## Phase 3: Thor Backend
 
@@ -92,37 +101,56 @@
 
 ---
 
-## Priority Matrix
+## Priority Matrix (Updated)
 
-| Feature | Impact | Effort | Priority |
-|---------|--------|--------|----------|
-| Pi0 mapping complete | High | Medium | P0 |
-| KV cache optimization | High | Medium | P0 |
-| TensorRT backend | High | High | P0 |
-| Runtime bridge | High | Medium | P1 |
-| Multi-rate execution | Medium | High | P1 |
-| ROS2 integration | Medium | Medium | P2 |
-| World model support | Medium | High | P2 |
+| Feature | Impact | Effort | Priority | Status |
+|---------|--------|--------|----------|--------|
+| Pi0 mapping complete | High | Medium | P0 | ✅ Done |
+| Runtime bridge | High | Medium | P0 | ✅ Done |
+| JSON serialization | Medium | Low | P0 | ✅ Done |
+| KV cache optimization | High | Medium | P1 | 🔄 Partial |
+| TensorRT backend | High | High | P1 | Pending |
+| Multi-rate execution | Medium | High | P2 | Pending |
+| ROS2 integration | Medium | Medium | P2 | Pending |
+| World model support | Medium | High | P3 | Pending |
 
 ---
 
 ## Next Steps (Immediate)
 
-1. **Complete Pi0 IR mapping validation**
-   - Verify compute graph matches model structure
-   - Test serialization/deserialization
-
-2. **Implement RuntimeBridge.to_runtime_adapter()**
-   - Map IR sensors to Observation
-   - Map IR graph to policy model
-   - Configure runtime from IR
-
-3. **Add TensorRT lowering pass**
+1. **Implement TensorRT lowering pass**
    - Convert neural blocks to TRT engines
    - Handle precision policies
    - Integrate CUDA graphs
 
-4. **KV cache optimization pass**
+2. **KV cache optimization pass**
    - Analyze reuse opportunities
    - Plan cache allocation
    - Generate eviction schedule
+
+3. **End-to-end integration test**
+   - Load real Pi0 policy
+   - Create IR from policy
+   - Generate runtime config
+   - Execute with robot_runtime
+
+4. **Add ACT/Diffusion policy mappings**
+   - ACT architecture mapping
+   - Diffusion policy mapping
+   - OpenVLA mapping
+
+---
+
+## Changelog
+
+### v0.1.1 (Current)
+- Added complete Pi0 compute graph mapping
+- Implemented RuntimeBridge with full config generation
+- Added JSON serialization/deserialization
+- Added integration and serialization tests
+- Updated Pi0Config to match robot_runtime structure
+
+### v0.1.0
+- Initial release with core IR types
+- Basic Pi0/Pi0.5 mapping
+- Lowering pass infrastructure
