@@ -33,7 +33,7 @@
 - [ ] Pi0-FAST variant
   - [ ] Autoregressive action tokenizer
 
-### ACT Mapping ✅ (NEW)
+### ACT Mapping ✅
 - [x] ACT architecture mapping
   - [x] Vision backbone (ResNet18)
   - [x] Transformer encoder/decoder
@@ -42,7 +42,7 @@
 - [x] ACTConfig with full parameter support
 - [x] 50Hz control frequency support
 
-### Diffusion Policy Mapping ✅ (NEW)
+### Diffusion Policy Mapping ✅
 - [x] Diffusion Policy architecture mapping
   - [x] U-Net denoiser option
   - [x] Transformer denoiser option
@@ -51,7 +51,7 @@
 - [x] DiffusionPolicyConfig with scheduler selection
 - [x] Multi-step inference support
 
-### OpenVLA Mapping ✅ (NEW)
+### OpenVLA Mapping ✅
 - [x] OpenVLA architecture mapping
   - [x] Vision encoder + projector
   - [x] LLM backbone integration
@@ -98,10 +98,29 @@
 
 ## Phase 4: Advanced Features
 
-### Multi-Rate Execution
-- [ ] Rate conversion buffers
-- [ ] Async sensor handling
-- [ ] Pipeline scheduling
+### Multi-Rate Execution ✅ (NEW)
+- [x] Rate conversion buffers
+  - [x] Upsampling (ZERO_ORDER_HOLD, LINEAR, CUBIC, SLERP)
+  - [x] Downsampling support
+  - [x] Staleness tracking
+- [x] Async sensor handling
+  - [x] SensorSyncMode (LATEST, SYNC, TIMESTAMP)
+  - [x] Queue-based buffering
+  - [x] Timeout configuration
+- [x] Pipeline scheduling
+  - [x] Multi-stage pipeline definition
+  - [x] Dependency graph with topological sort
+  - [x] Circular dependency detection
+  - [x] Hyperperiod calculation
+- [x] Schedulability analysis
+  - [x] CPU utilization estimation
+  - [x] Rate-monotonic analysis
+  - [x] Deadline feasibility check
+- [x] Preset schedules
+  - [x] create_vla_schedule()
+  - [x] create_diffusion_schedule()
+  - [x] create_act_schedule()
+  - [x] create_schedule_from_module()
 
 ### World Model Support
 - [ ] Latent dynamics modeling
@@ -142,7 +161,7 @@
 | KV cache optimization | High | Medium | P1 | ✅ Done |
 | TensorRT backend | High | High | P1 | ✅ Done |
 | ACT/Diffusion/OpenVLA mappings | High | Medium | P1 | ✅ Done |
-| Multi-rate execution | Medium | High | P2 | Pending |
+| Multi-rate execution | Medium | High | P2 | ✅ Done |
 | ROS2 integration | Medium | Medium | P2 | Pending |
 | World model support | Medium | High | P3 | Pending |
 
@@ -160,32 +179,54 @@
 
 ---
 
+## Multi-Rate Execution Modes
+
+| Mode | Vision | Policy | Control | Use Case |
+|------|--------|--------|---------|----------|
+| VLA Standard | 10 Hz | 20 Hz | 100 Hz | General VLA policies |
+| Diffusion | 30 Hz | 10 Hz | 10 Hz | Diffusion-based policies |
+| ACT | 30 Hz | 50 Hz | 50 Hz | High-frequency manipulation |
+| Low-Latency | 30 Hz | 50 Hz | 200 Hz | Reactive control |
+
+---
+
 ## Next Steps (Immediate)
 
-1. **Multi-rate execution implementation**
-   - Rate conversion buffers
-   - Async sensor handling
-   - Pipeline scheduling
+1. **ROS2 bridge implementation**
+   - Sensor topic mapping
+   - Action publisher integration
+   - Executor graph generation
 
 2. **End-to-end integration with real models**
    - Load real Pi0/Pi0.5 policies
    - Run inference through IR pipeline
    - Benchmark against native execution
 
-3. **ROS2 bridge implementation**
-   - Sensor topic mapping
-   - Action publisher integration
-   - Executor graph generation
-
-4. **Pi0-FAST variant support**
+3. **Pi0-FAST variant support**
    - Autoregressive action tokenizer
    - Token-based action generation
+
+4. **Deadline enforcement and profiling**
+   - Real-time deadline monitoring
+   - Latency measurement
+   - Jitter analysis
 
 ---
 
 ## Changelog
 
-### v0.1.3 (Current)
+### v0.1.4 (Current)
+- Multi-rate execution infrastructure
+  - RateConversionBuffer for rate conversion
+  - AsyncSensorConfig for async sensors
+  - PipelineStage and MultiRateSchedule
+  - MultiRateScheduler with schedulability analysis
+- Interpolation modes (ZERO_ORDER_HOLD, LINEAR, CUBIC, SLERP)
+- Preset schedules for VLA, Diffusion, ACT policies
+- 29 new unit tests for multi-rate execution
+- Multi-rate scheduling example (04_multirate_scheduling.py)
+
+### v0.1.3
 - Added ACT (Action Chunking with Transformers) mapping
 - Added Diffusion Policy mapping with U-Net/Transformer options
 - Added OpenVLA mapping with LLM backbone support
