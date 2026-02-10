@@ -10,21 +10,39 @@ Execution IR can be mapped to:
 - Triton kernels
 """
 
-from robot_ir.lowering.base import LoweringPass, LoweringContext
+from robot_ir.lowering.base import LoweringPass, LoweringContext, PassPipeline
 from robot_ir.lowering.passes import (
     KVReusePlanningPass,
     LatencySchedulerPass,
     PrecisionPlannerPass,
     MemoryLayoutPass,
     MultiRateLoopPass,
+    KernelFusionPass,
+)
+from robot_ir.lowering.kv_cache import (
+    KVCacheAnalyzer,
+    KVCacheOptimizer,
+    KVCacheOptimizationPass,
+    KVCacheAnalysis,
+    KVCacheOptPlan,
 )
 
 __all__ = [
+    # Base
     "LoweringPass",
     "LoweringContext",
+    "PassPipeline",
+    # Standard passes
     "KVReusePlanningPass",
     "LatencySchedulerPass",
     "PrecisionPlannerPass",
     "MemoryLayoutPass",
     "MultiRateLoopPass",
+    "KernelFusionPass",
+    # KV cache optimization
+    "KVCacheAnalyzer",
+    "KVCacheOptimizer",
+    "KVCacheOptimizationPass",
+    "KVCacheAnalysis",
+    "KVCacheOptPlan",
 ]

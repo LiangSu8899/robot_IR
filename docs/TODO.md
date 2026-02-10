@@ -49,13 +49,14 @@
 
 ## Phase 3: Thor Backend
 
-### TensorRT Integration
-- [ ] IR to TensorRT engine compilation
-- [ ] FP8/INT8 quantization support
-- [ ] CUDA graph capture
-- [ ] Multi-stream execution
+### TensorRT Integration ✅
+- [x] IR to TensorRT engine compilation (TRTEngineBuilder)
+- [x] FP8/INT8 quantization support (TRTPrecision mapping)
+- [x] CUDA graph capture (TRTEngineRunner)
+- [x] Multi-stream execution (TRTExecutionPlanner)
 
-### Memory Optimization
+### Memory Optimization 🔄
+- [x] KV cache analysis and optimization
 - [ ] Memory-bound operation detection
 - [ ] Kernel fusion patterns
 - [ ] Memory layout optimization
@@ -108,8 +109,8 @@
 | Pi0 mapping complete | High | Medium | P0 | ✅ Done |
 | Runtime bridge | High | Medium | P0 | ✅ Done |
 | JSON serialization | Medium | Low | P0 | ✅ Done |
-| KV cache optimization | High | Medium | P1 | 🔄 Partial |
-| TensorRT backend | High | High | P1 | Pending |
+| KV cache optimization | High | Medium | P1 | ✅ Done |
+| TensorRT backend | High | High | P1 | ✅ Done |
 | Multi-rate execution | Medium | High | P2 | Pending |
 | ROS2 integration | Medium | Medium | P2 | Pending |
 | World model support | Medium | High | P3 | Pending |
@@ -118,32 +119,39 @@
 
 ## Next Steps (Immediate)
 
-1. **Implement TensorRT lowering pass**
-   - Convert neural blocks to TRT engines
-   - Handle precision policies
-   - Integrate CUDA graphs
-
-2. **KV cache optimization pass**
-   - Analyze reuse opportunities
-   - Plan cache allocation
-   - Generate eviction schedule
-
-3. **End-to-end integration test**
-   - Load real Pi0 policy
-   - Create IR from policy
-   - Generate runtime config
-   - Execute with robot_runtime
-
-4. **Add ACT/Diffusion policy mappings**
+1. **Add ACT/Diffusion policy mappings**
    - ACT architecture mapping
    - Diffusion policy mapping
    - OpenVLA mapping
+
+2. **Multi-rate execution implementation**
+   - Rate conversion buffers
+   - Async sensor handling
+   - Pipeline scheduling
+
+3. **End-to-end integration with real models**
+   - Load real Pi0/Pi0.5 policies
+   - Run inference through IR pipeline
+   - Benchmark against native execution
+
+4. **ROS2 bridge implementation**
+   - Sensor topic mapping
+   - Action publisher integration
+   - Executor graph generation
 
 ---
 
 ## Changelog
 
-### v0.1.1 (Current)
+### v0.1.2 (Current)
+- TensorRT lowering pass with precision mapping
+- TRT engine builder and runner infrastructure
+- KV cache analyzer and optimizer
+- Sliding window, paged attention, flash attention support
+- Runtime integration example
+- Execution planner for stream assignment
+
+### v0.1.1
 - Added complete Pi0 compute graph mapping
 - Implemented RuntimeBridge with full config generation
 - Added JSON serialization/deserialization

@@ -1,6 +1,27 @@
 """TensorRT backend for high-performance inference."""
 
-# TODO: Implement TensorRT backend
-# - Compile Robot IR to TensorRT engines
-# - Support FP16/FP8/INT8 precision
-# - CUDA graph integration
+from robot_ir.backends.tensorrt.engine import (
+    TRTConfig,
+    TRTPrecision,
+    TRTOptLevel,
+    TRTEngineSpec,
+    TRTEngineBuilder,
+    TRTEngineRunner,
+)
+from robot_ir.backends.tensorrt.lowering import (
+    TRTLoweringConfig,
+    TensorRTLoweringPass,
+    TRTExecutionPlanner,
+)
+
+__all__ = [
+    "TRTConfig",
+    "TRTPrecision",
+    "TRTOptLevel",
+    "TRTEngineSpec",
+    "TRTEngineBuilder",
+    "TRTEngineRunner",
+    "TRTLoweringConfig",
+    "TensorRTLoweringPass",
+    "TRTExecutionPlanner",
+]
